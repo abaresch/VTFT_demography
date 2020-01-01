@@ -8,8 +8,8 @@ fn_getvar <- function(var,fpath){
   nc_close(t)
   return(v)
 }
-fdir.main = "~/Downloads/" #or other directory
-meanage <- fn_getvar(var = 'fpc',fpath = paste0(fdir.main,"/DATA_analysis/meanAge_gridcell_prisec_plantonly_fpc_gtc_0d01.nc"))
+fdir.main = "~/VTFT_demography/" #or other directory
+meanage <- fn_getvar(var = 'fpc',fpath = paste0(fdir.main,"/data/meanAge_gridcell_prisec_plantonly_fpc_gtc_0d01.nc"))
 
 meanage <- as.vector(meanage)
 meanage <- meanage[!is.na(meanage)] 

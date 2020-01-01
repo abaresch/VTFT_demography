@@ -23,14 +23,14 @@ fn_getvar      <- function(var,fpath){
 }
 
 library(ncdf4)
-fdir.main = "~/Downloads/" #or directory of input,output data
+fdir.main = "~/VTFT_demography/" #or directory of input,output data
 
 #get data
 #..zonmean_age
-dat.yfyl <- fn_getvar(var = 'zonmean_age',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_prisec_luhv2/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
-dat.yfnl <- fn_getvar(var = 'zonmean_age',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_prisec_noluc/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
-dat.nfyl <- fn_getvar(var = 'zonmean_age',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_prisec_nofire_yesluc/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
-dat.lat  <- fn_getvar(var = 'lat',        fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_prisec_luhv2/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
+dat.yfyl <- fn_getvar(var = 'zonmean_age',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_prisec_luhv2/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
+dat.yfnl <- fn_getvar(var = 'zonmean_age',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_prisec_noluc/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
+dat.nfyl <- fn_getvar(var = 'zonmean_age',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_prisec_nofire_yesluc/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
+dat.lat  <- fn_getvar(var = 'lat',        fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_prisec_luhv2/zonmean_meanAge_gridcell_prisec_18602017_plantonly_fpc_gtc_0d01.nc"))
 
 #put into dataframe
 df  <- data.frame(age       =as.vector(dat.yfyl),
@@ -105,10 +105,10 @@ ADDGFAD=TRUE
 for(foldcode_hovmoller_plots in 1:1){
 	if(MAKEPDF==TRUE){
 		if(ADDGFAD==TRUE){
-			pdf(file = paste0(fdir.main,"/figures_agemaps/hovmoller_ecosystemage_18602016_yfyl_wGFADv1.1.pdf"),
+			pdf(file = paste0(fdir.main,"/figures/figures_agemaps/hovmoller_ecosystemage_18602016_yfyl_wGFADv1.1.pdf"),
 				width=14,height=4.5)
 		}else{
-			pdf(file = paste0(fdir.main,"/figures_agemaps/hovmoller_ecosystemage_18602016_yfyl.pdf"),
+			pdf(file = paste0(fdir.main,"/figures/figures_agemaps/hovmoller_ecosystemage_18602016_yfyl.pdf"),
 				width=14,height=4.5)
 		}
 	}
@@ -154,7 +154,7 @@ for(foldcode_hovmoller_plots in 1:1){
 	if(MAKEPDF==TRUE){dev.off()}
 	
 	#..yfnl
-	if(MAKEPDF==TRUE){pdf(file = paste0(fdir.main,"/figures_agemaps/hovmoller_ecosystemage_18602016_yfnl.pdf"),
+	if(MAKEPDF==TRUE){pdf(file = paste0(fdir.main,"/figures/figures_agemaps/hovmoller_ecosystemage_18602016_yfnl.pdf"),
 		width=14,height=4.5)}
 	par(mar=c(0.5,2,1,0.5))
 	#try plotting
@@ -172,7 +172,7 @@ for(foldcode_hovmoller_plots in 1:1){
 	if(MAKEPDF==TRUE){dev.off()}
 	
 	#..nfyl
-	if(MAKEPDF==TRUE){pdf(file = paste0(fdir.main,"/figures_agemaps/hovmoller_ecosystemage_18602016_nfyl.pdf"),
+	if(MAKEPDF==TRUE){pdf(file = paste0(fdir.main,"/figures/figures_agemaps/hovmoller_ecosystemage_18602016_nfyl.pdf"),
 		width=14,height=4.5)}
 	par(mar=c(0.5,2,1,0.5))
 	#try plotting
@@ -248,7 +248,7 @@ mod.lm3.tr <- lm(data = df.trend[which(df.trend$zonalband=='tropics'),],formula 
 summary(mod.lm3.tr)
 
 #plot trends
-pdf(file = paste0(fdir.main,"/figures_agemaps/hovmoller_trend_botetr.pdf"),
+pdf(file = paste0(fdir.main,"/figures/figures_agemaps/hovmoller_trend_botetr.pdf"),
 		width=6,height=5)
 par(mfrow=c(1,1),mar=c(4,5,4,1))
 #yes fire no luc
@@ -321,12 +321,12 @@ library(vioplot)
 #get data
 for(foldcode_getdata_ageclass_continent in 1:1){
 		# plant cover > 1% fpc all plants
-		age.africa    <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_africa.nc"))
-		age.asia      <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_asia.nc"))
-		age.australia <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_australia.nc"))
-		age.namer     <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_northamerica.nc"))
-		age.samer     <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_southamerica.nc"))
-		age.europe    <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/simulation_data/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_europe.nc"))
+		age.africa    <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_africa.nc"))
+		age.asia      <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_asia.nc"))
+		age.australia <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_australia.nc"))
+		age.namer     <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_northamerica.nc"))
+		age.samer     <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_southamerica.nc"))
+		age.europe    <- fn_getvar(var = 'ageclass_prisec_frac',fpath = paste0(fdir.main,"/data/data_simulation/github_lpj_agems_origresp_prisec_luhv2/meanAge_gridcell_prisec_2000s_plantonly_fpc_gtc_0d01_continent_europe.nc"))
 
 		age.africa <- as.vector(age.africa)
 		age.africa <- age.africa[!is.na(age.africa)]
@@ -351,7 +351,7 @@ for(foldcode_getdata_ageclass_continent in 1:1){
 	
 }
 
-pdf(file = paste0(fdir.main,"/figures_agemaps/boxplots_ecosystemage_continent_lpj.pdf"),
+pdf(file = paste0(fdir.main,"/figures/figures_agemaps/boxplots_ecosystemage_continent_lpj.pdf"),
 		width=12,height=5)
 par(mfrow=c(1,1),mar=c(4,4,3,1))
 # set up empty plot
@@ -385,7 +385,7 @@ ls.tsum    = list() ; counter=1
 for(foldcode_get_gfad in 1:1){
 		#get data
 		#from ben poulter gfadv1 inventory
-		f.path = paste0(fdir.main,"/ancillary_data/GFAD_V1-1_ageonly_invertlat.nc")
+		f.path = paste0(fdir.main,"/data/data_ancillary/GFAD_V1-1_ageonly_invertlat.nc")
 		t.gfad     <- fn_getvar(var = "age", fpath = f.path) #dims lon lat pft_frac ageclass
 		t.gfad.lat <- fn_getvar(var = "lat", fpath = f.path) #dims lon lat pft_frac ageclass
 		t.gfad.lon <- fn_getvar(var = "lon", fpath = f.path) #dims lon lat pft_frac ageclass
@@ -438,7 +438,7 @@ for(foldcode_get_gfad in 1:1){
 			#   #................
 			#   #create ncdf
 			#   #................
-			#   global.nc <- nc_create(filename = paste0(fdir.main,"/ancillary_data/GFAD_V1-1_ageonly_invertlat_meanage.nc"),
+			#   global.nc <- nc_create(filename = paste0(fdir.main,"/data/data_ancillary/GFAD_V1-1_ageonly_invertlat_meanage.nc"),
 			#   	variable.def.ncdf)
 			# 
 			#   #Assign global attributes
@@ -451,7 +451,7 @@ for(foldcode_get_gfad in 1:1){
 		}#..end write
 		
 		#get transcom mask 
-		transcom <- fn_getvar(var = 'transcom_region',fpath = paste0(fdir.main,"/ancillary_data/transcom_24regions_05deg_continent.nc"))
+		transcom <- fn_getvar(var = 'transcom_region',fpath = paste0(fdir.main,"/data/data_ancillary/transcom_24regions_05deg_continent.nc"))
 
 		#create masks
 		mask = transcom
@@ -547,7 +547,7 @@ df.namer = fn_addageclass(df.namer)
 df.samer = data.frame(age = age.samer)
 df.samer = fn_addageclass(df.samer)
 
-pdf(file = paste0(fdir.main,"/figures_agemaps/cumsum_ageclass_continent.pdf"),
+pdf(file = paste0(fdir.main,"/figures/figures_agemaps/cumsum_ageclass_continent.pdf"),
 		width=6,height=5)
 par(mfrow=c(1,1))
 plot(x=1:12,y=cumsum(df.africa$sum_gridcells)/sum(df.africa$sum_gridcells),col='blue',
@@ -579,8 +579,8 @@ dev.off()
 # GFADv1.1 Hovmöller plot (1 year)
 # ..effectively stacked bar
 #==================================
-dat.age <- fn_getvar(var = 'mean_age',fpath = paste0(fdir.main,"/ancillary_data/zonmean_GFAD_V1-1_ageonly_invertlat_meanage.nc"))
-dat.lat <- fn_getvar(var = 'lat',fpath = paste0(fdir.main,"/ancillary_data/zonmean_GFAD_V1-1_ageonly_invertlat_meanage.nc"))
+dat.age <- fn_getvar(var = 'mean_age',fpath = paste0(fdir.main,"/data/data_ancillary/zonmean_GFAD_V1-1_ageonly_invertlat_meanage.nc"))
+dat.lat <- fn_getvar(var = 'lat',fpath = paste0(fdir.main,"/data/data_ancillary/zonmean_GFAD_V1-1_ageonly_invertlat_meanage.nc"))
 
 #put into dataframe
 df.gfad <- data.frame(age=dat.age,lat=dat.lat)

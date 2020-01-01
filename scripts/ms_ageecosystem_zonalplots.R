@@ -10,32 +10,32 @@ fn_getvar <- function(var,fpath){
        return(v)
 }
 #NOTE: averages for years 2000-2010
-fdir.main = "~/Downloads/" #or directory of input,output data
+fdir.main = "~/VTFT_demography/" #or directory of input,output data
 
 #---------------------------------------------
 # get data
 #---------------------------------------------
-fdir      = paste0(fdir.main,"/simulation_data/zonal_data/")
+fdir      = paste0(fdir.main,"/data/data_simulation/zonal_data/")
 for(foldcode_getdata in 1:1){
-	jung.mte.lat   <- fn_getvar('lat',paste0(fdir.main,"/ancillary_data/zonmean_jung_gppGL_mul86400_muldpm_yearsum_2000avg_kgCm2yr.nc"))
-	jung.mte.gpp   <- fn_getvar('gpp',paste0(fdir.main,"/ancillary_data/zonmean_jung_gppGL_mul86400_muldpm_yearsum_2000avg_kgCm2yr.nc"))
+	jung.mte.lat   <- fn_getvar('lat',paste0(fdir.main,"/data/data_ancillary/zonmean_jung_gppGL_mul86400_muldpm_yearsum_2000avg_kgCm2yr.nc"))
+	jung.mte.gpp   <- fn_getvar('gpp',paste0(fdir.main,"/data/data_ancillary/zonmean_jung_gppGL_mul86400_muldpm_yearsum_2000avg_kgCm2yr.nc"))
 
-	jung2.mte.lat   <- fn_getvar('lat',paste0(fdir.main,"/ancillary_data/zonmean_jung_reco_ilambproduct_2000avg_kgm2yr.nc"))
-	jung2.mte.reco  <- fn_getvar('reco',paste0(fdir.main,"/ancillary_data/zonmean_jung_reco_ilambproduct_2000avg_kgm2yr.nc"))
+	jung2.mte.lat   <- fn_getvar('lat',paste0(fdir.main,"/data/data_ancillary/zonmean_jung_reco_ilambproduct_2000avg_kgm2yr.nc"))
+	jung2.mte.reco  <- fn_getvar('reco',paste0(fdir.main,"/data/data_ancillary/zonmean_jung_reco_ilambproduct_2000avg_kgm2yr.nc"))
 
-	globbiomass.lat   <- fn_getvar('lat',paste0(fdir.main,"/ancillary_data/zonmean_GlobBiomass_AGC_kgCm2_zeromiss.nc"))
-	globbiomass.meankg   <- fn_getvar('AGC',paste0(fdir.main,"/ancillary_data/zonmean_GlobBiomass_AGC_kgCm2_zeromiss.nc"))
-	globbiomass.sumPg    <- fn_getvar('AGC',paste0(fdir.main,"/ancillary_data/zonsum_GlobBiomass_AGC_PgC_zeromiss.nc"))
+	globbiomass.lat   <- fn_getvar('lat',paste0(fdir.main,"/data/data_ancillary/zonmean_GlobBiomass_AGC_kgCm2_zeromiss.nc"))
+	globbiomass.meankg   <- fn_getvar('AGC',paste0(fdir.main,"/data/data_ancillary/zonmean_GlobBiomass_AGC_kgCm2_zeromiss.nc"))
+	globbiomass.sumPg    <- fn_getvar('AGC',paste0(fdir.main,"/data/data_ancillary/zonsum_GlobBiomass_AGC_PgC_zeromiss.nc"))
 
-	avit.agc.lat   <- fn_getvar('lat',paste0(fdir.main,"/ancillary_data/zonmean_Avitabile_AGC_kgCm2.nc"))
-	avit.agc.meankg  <- fn_getvar('AGC',paste0(fdir.main,"/ancillary_data/zonmean_Avitabile_AGC_kgCm2.nc"))
-	avit.agc.sumPg   <- fn_getvar('cell_area',paste0(fdir.main,"/ancillary_data/zonsum_Avitabile_AGC_PgC.nc"))
+	avit.agc.lat   <- fn_getvar('lat',paste0(fdir.main,"/data/data_ancillary/zonmean_Avitabile_AGC_kgCm2.nc"))
+	avit.agc.meankg  <- fn_getvar('AGC',paste0(fdir.main,"/data/data_ancillary/zonmean_Avitabile_AGC_kgCm2.nc"))
+	avit.agc.sumPg   <- fn_getvar('cell_area',paste0(fdir.main,"/data/data_ancillary/zonsum_Avitabile_AGC_PgC.nc"))
 
-	fao.soil.lat      <- fn_getvar('lat',paste0(fdir.main,"/ancillary_data/zonmean_FAO_soils_carbon_kgCm2.nc"))
-	fao.soil.meankg   <- fn_getvar('soilc',paste0(fdir.main,"/ancillary_data/zonmean_FAO_soils_carbon_kgCm2.nc"))
-	fao.soil.sumPg    <- fn_getvar('soilc',paste0(fdir.main,"/ancillary_data/zonsum_FAO_soils_carbon_PgC.nc"))
+	fao.soil.lat      <- fn_getvar('lat',paste0(fdir.main,"/data/data_ancillary/zonmean_FAO_soils_carbon_kgCm2.nc"))
+	fao.soil.meankg   <- fn_getvar('soilc',paste0(fdir.main,"/data/data_ancillary/zonmean_FAO_soils_carbon_kgCm2.nc"))
+	fao.soil.sumPg    <- fn_getvar('soilc',paste0(fdir.main,"/data/data_ancillary/zonsum_FAO_soils_carbon_PgC.nc"))
 	for(folcode_binsoilbylat05deg in 1:1){
-		t <- nc_open(paste0(fdir.main,"/ancillary_data/zonsum_FAO_soils_carbon_1kmres_PgC.nc"))
+		t <- nc_open(paste0(fdir.main,"/data/data_ancillary/zonsum_FAO_soils_carbon_1kmres_PgC.nc"))
 		t.dat <- ncvar_get(t,'GSOCmapV1.2.0')
 		t.lat <- ncvar_get(t,'lat')
 		nc_close(t)
@@ -95,7 +95,7 @@ for(foldcode_getdata in 1:1){
 #---------------------------------------------
 # make zonal plots
 #---------------------------------------------
-pdf(file = paste0(fdir.main,"figures_zonal/zonal_plots_carbonstocks.pdf"),
+pdf(file = paste0(fdir.main,"/figures/figures_zonal/zonal_plots_carbonstocks.pdf"),
 	width=16,height=10)
 par(mfrow=c(2,3),mar=c(4.5,4.5,3,0.5))
 for(foldcode_latplots_stocks in 1:1){

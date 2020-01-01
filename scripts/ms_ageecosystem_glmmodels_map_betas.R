@@ -22,7 +22,7 @@ library(ncdf4)
 library(ggplot2)
 library(gridExtra)
 
-fdir.main = "~/Downloads/" #or directory of main folder
+fdir.main = "~/VTFT_demography/" #or directory of main folder
 
 #--------------------------------------
 # ancillary functions
@@ -67,9 +67,9 @@ for(PRISEC in PRISEC.vec){
         #modflux
         for(i in 1:length(t.st.vec)){
             print(paste0(PRISEC,' ',modflux,' ',i))
-            t.aic  <- readRDS(file = paste0(fdir.main,"/DATA_analysis/glm_models/",stattype,"/",PRISEC,"_",modflux,"_table_aic_",t.st.vec[i],"_",t.end.vec[i],".RDS"))
-            t.glm  <- readRDS(file = paste0(fdir.main,"/DATA_analysis/glm_models/",stattype,"/",PRISEC,"_",modflux,"_table_paramtopmodel_",t.st.vec[i],"_",t.end.vec[i],".RDS"))
-            t.prd  <- readRDS(file = paste0(fdir.main,"/DATA_analysis/glm_models/",stattype,"/",PRISEC,"_",modflux,"_table_predictions_",t.st.vec[i],"_",t.end.vec[i],".RDS"))
+            t.aic  <- readRDS(file = paste0(fdir.main,"/data/data_glm_models/",stattype,"/",PRISEC,"_",modflux,"_table_aic_",t.st.vec[i],"_",t.end.vec[i],".RDS"))
+            t.glm  <- readRDS(file = paste0(fdir.main,"/data/data_glm_models/",stattype,"/",PRISEC,"_",modflux,"_table_paramtopmodel_",t.st.vec[i],"_",t.end.vec[i],".RDS"))
+            t.prd  <- readRDS(file = paste0(fdir.main,"/data/data_glm_models/",stattype,"/",PRISEC,"_",modflux,"_table_predictions_",t.st.vec[i],"_",t.end.vec[i],".RDS"))
             
             t.aic$prisec  <- PRISEC
             t.glm$prisec  <- PRISEC
@@ -210,7 +210,7 @@ for(PRISEC in PRISEC.vec){
 if(makeplot==TRUE){
 		t.modflux = paste0('_',modflux)
 		if(modflux=='nep'){
-			pdf(file = paste0(fdir.main,"/DATA_analysis/figures_models/prisec_glm_gridcell_predictions_global_ageclassmodel_standardized_",stattype,t.modflux,".pdf"),
+			pdf(file = paste0(fdir.main,"/figures/figures_models/prisec_glm_gridcell_predictions_global_ageclassmodel_standardized_",stattype,t.modflux,".pdf"),
 			width=12,height=5)
 			
 			grid.arrange(
@@ -218,7 +218,7 @@ if(makeplot==TRUE){
 			 layout_matrix = rbind(c(1,2))
 			)					
 		}else{
-			pdf(file = paste0(fdir.main,"/DATA_analysis/figures_models/prisec_glm_gridcell_predictions_global_ageclassmodel_standardized_",stattype,t.modflux,".pdf"),
+			pdf(file = paste0(fdir.main,"/figures/figures_models/prisec_glm_gridcell_predictions_global_ageclassmodel_standardized_",stattype,t.modflux,".pdf"),
 			width=12,height=10)
 	
 			grid.arrange(
@@ -303,7 +303,7 @@ for(z in 1:3){
 
 if(makeplot==TRUE){
 		t.modflux = paste0('_',modflux)
-		pdf(file = paste0(fdir.main,"/DATA_analysis/figures_models/",PRISEC,"_glm_gridcell_predictions_zonalband_ageclassmodel_standardized_",stattype,t.modflux,".pdf"),
+		pdf(file = paste0(fdir.main,"/figures/figures_models/",PRISEC,"_glm_gridcell_predictions_zonalband_ageclassmodel_standardized_",stattype,t.modflux,".pdf"),
 		width=18,height=5)
 		
 				grid.arrange(
@@ -329,7 +329,7 @@ if(makeplot==TRUE){dev.off()}
 z.vars   = c("prec","temp","(Intercept)","as.factor(ageclass_code)1","as.factor(ageclass_code)2","as.factor(ageclass_code)3","as.factor(ageclass_code)4","as.factor(ageclass_code)5","as.factor(ageclass_code)6","as.factor(ageclass_code)7","as.factor(ageclass_code)8","as.factor(ageclass_code)9","as.factor(ageclass_code)10","as.factor(ageclass_code)11","as.factor(ageclass_code)12")
 z.long   = c('precipitation','temperature','intercept','ageclass_1','ageclass_2','ageclass_3','ageclass_4','ageclass_5','ageclass_6','ageclass_7','ageclass_8','ageclass_9','ageclass_10','ageclass_11','ageclass_12')
 z.unit   = rep('unitless',times=length(z.long))
-f.out    = paste0(fdir.main,"/DATA_analysis/glm_models/netcdf_nointc/")
+f.out    = paste0(fdir.main,"/data/data_glm_models/netcdf_nointc/")
 stattype = 'stat_nointc'  #stat_nointc
 
 PRISEC.vec  = c('pri','sec')
@@ -424,7 +424,7 @@ PRISEC.vec   = c('pri','sec')
 modflux.vec  = c('npp','rh')
 stattype     = 'stat_nointc'  #stat_nointc
 
-f.path   = paste0(fdir.main,"/DATA_analysis/glm_models/netcdf_nointc/")
+f.path   = paste0(fdir.main,"/data/data_glm_models/netcdf_nointc/")
 z.vars1  = c("prec","temp")
 z.vars2  = c('precipitation','temperature','empty_slot',
 			 'ageclass_1','ageclass_2','ageclass_3','ageclass_4','ageclass_5','ageclass_6',
@@ -639,7 +639,7 @@ modflux.vec = c('npp','rh')
 stattype    = 'stat_nointc'  #stat_nointc or empty ('')
  
 z.vars  = c('ageclasscode_maxflux','ageclass_maxmin_effectiverange')
-f.path  = paste0(fdir.main,"/DATA_analysis/glm_models/netcdf_nointc/")
+f.path  = paste0(fdir.main,"/data/data_glm_models/netcdf_nointc/")
 #empty matrix
 ls.beta <- ls.beta.range <- list() #four in each list for pri,sec each npp,rh
 mx.beta.int <- matrix(NA,ncol=360,nrow=720)
@@ -772,7 +772,7 @@ min(df.bar.flux[which(df.bar.flux$prisec==PRISEC & df.bar.flux$modflux==modflux 
 #......now save to pdf
 if(makeplot==TRUE){
 		t.modflux = paste0('_',modflux)
-		pdf(file = paste0(fdir.main,"/DATA_analysis/figures_models/prisec_histograms_",stattype,"_maxage_effectiverange_glm_gridcell.pdf"),
+		pdf(file = paste0(fdir.main,"/figures/figures_models/prisec_histograms_",stattype,"_maxage_effectiverange_glm_gridcell.pdf"),
 		width=9,height=8)
 		
 		grid.arrange(
@@ -793,7 +793,7 @@ PRISEC.vec   = c('pri','sec')
 modflux      = c('npp')
 stattype     = 'stat_nointc'  #stat_output or stat_output_nointc
 
-f.path   = paste0(fdir.main,"/DATA_analysis/glm_models/netcdf_notintc/")
+f.path   = paste0(fdir.main,"/data/data_glm_models/netcdf_notintc/")
 z.vars2  = c('ageclass_1','ageclass_2','ageclass_3','ageclass_4','ageclass_5','ageclass_6',
 						'ageclass_7','ageclass_8','ageclass_9','ageclass_10','ageclass_11','ageclass_12')
 
@@ -988,7 +988,7 @@ for(z in 1:length(z.vars1)){
 #
 #==================================
 #==================================
-f.path   = paste0(fdir.main,"/DATA_analysis/glm_models/netcdf_notintc/")
+f.path   = paste0(fdir.main,"/data/data_glm_models/netcdf_notintc/")
 mx.flux.max <- mx.flux.min <- matrix(NA,ncol=360,nrow=720)
 
 #area by grid-cell
