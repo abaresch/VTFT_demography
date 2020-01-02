@@ -1,10 +1,10 @@
 /********************************************************************************/
 /**                                                                            **/
-/**         s e c f o r e s t _ t r a n s i t i o n s  .  c    		           **/
+/**         s e c f o r e s t _ t r a n s i t i o n s  .  c    		       **/
 /**                                                                            **/
 /**   pseudo code                                                              **/
 /**   functions below:                                                         **/
-/**     ageclass_createORmix -- create of mix young ageclass                   **/
+/**     ageclass_createORmix -- create or mix young ageclass                   **/
 /**     find_exist_ageclass  -- determine if an ageclass exists in list        **/
 /**     getstand_standid -- returns position of an ageclass in list            **/
 /**     mixStand_ageclass_transition -- frac transition, mix existing ageclass **/
@@ -91,12 +91,12 @@ int getstand_standid(Cell *cell, int stand_standid, int PRIMARY_or_SECFOREST){
 	return(k);
 }
 
-/*----------------------------------------------------------*/
-/* (called by main_transStand)                              */
-/* between-ageclass fractional transition                   */
-/* ..older ageclass exists, requires mixing state variables */
-/* ..updates vector of fractional transitions               */
-/*----------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+/* (called by main_transStand)                                    */
+/* between-ageclass fractional transition                         */
+/* ..if an older ageclass exists, requires mixing state variables */
+/* ..updates vector of fractional transitions                     */
+/*----------------------------------------------------------------*/
 void mixStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Stand *stand2, Real frac_transition,
 		const Pftpar *pftpar, int npft, int PRIMARY_or_SECFOREST){
 
@@ -106,7 +106,7 @@ void mixStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Sta
 
 	////////////////
 	// create tempStand with characteristics of younger stand
-    // ..but smaller fractional area
+        // ..but smaller fractional area
 	pos_transStand=addstand(cell->standlist);
 	pos_transStand--;
 	transStand=getstand(cell->standlist,pos_transStand);
@@ -128,28 +128,28 @@ void mixStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Sta
 
 	//----------------------------------------------------------------------------------
 	//update total stand fraction and fractional transitions for younger (donor) stand
-    //----------------------------------------------------------------------------------
-    //update fraction transitions; start at end, end at start+1
-    //update to total stand fraction occurs at end of secforest_transition() fn
+        //----------------------------------------------------------------------------------
+        //update fraction transitions; start at end, end at start+1
+        //update to total stand fraction occurs at end of secforest_transition() fn
 	//overwrite fraction transitioning between stands (frac_transition[n])
-    for(p=(stand1->len_frac_transition - 1); p > 0; p--){
+        for(p=(stand1->len_frac_transition - 1); p > 0; p--){
 		stand1->frac_transition[p]=stand1->frac_transition[p-1];
-    }
+        }
 
-    //update value at incoming fraction: set to zero
-    //updated if there is an incoming fraction from a younger stand
-    stand1->frac_transition[0]=0.0;
+        //update value at incoming fraction: set to zero
+        //updated if there is an incoming fraction from a younger stand
+        stand1->frac_transition[0]=0.0;
 
-    //update total standfrac of younger stand
-    stand1->frac-=frac_transition;
+        //update total standfrac of younger (donor) stand
+        stand1->frac-=frac_transition;
 
 	//if empty, delete stand
 	if(stand1->frac < 0.0000004){
 		//store standid before deleting stand1 and standlist is updated
-        //..reqd for searching
+                //..reqd for searching
 		old_standid=stand2->ageclass_standid;
 
-        //remove empty stand, update list
+                //remove empty stand, update list
 		delstand_preserveOrder(cell, stand1, 1, pos_stand1);
 
 		//update position of transStand
@@ -161,7 +161,7 @@ void mixStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Sta
 	}
 	//-------------
 	//NOTE: stand deletions occur at end of ageclass_transtion()
-    //      ..and catch full transitions (i.e., when stand->frac==0)
+        //      ..and catch full transitions (i.e., when stand->frac==0)
 	//------------
 
 	//mix and delete tempStand
@@ -173,7 +173,7 @@ void mixStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Sta
 /*-----------------------------------------------*/
 /* (called by main_transStand)                   */
 /* between-ageclass fractional transition        */
-/* ..new ageclass stand created                  */
+/* ..if new ageclass, then stand created         */
 /* ..updates vector of fractional transitions    */
 /*-----------------------------------------------*/
 void addStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Real frac_transition, int num_trans_older, int new_TimeSinceDist,
@@ -185,7 +185,7 @@ void addStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Rea
 
 	////////////////
 	// create tempStand with characteristics of younger stand
-    // ..but smaller fractional area
+        // ..but smaller fractional area
 	pos_transStand=addstand(cell->standlist);
 	pos_transStand--;
 	transStand=getstand(cell->standlist,pos_transStand);
@@ -208,31 +208,31 @@ void addStand_ageclass_transition(Cell *cell, Stand *stand1, int pos_stand1, Rea
 
 	//------------------------------------------------
 	// update total stand fraction
-    //..and fractional transitions for younger stand
-    //------------------------------------------------
-    //update fraction transitions; start at end, end at start+1
-    //update to total stand fraction occurs at end of secforest_transition() fn
+        //..and fractional transitions for younger stand
+        //------------------------------------------------
+        //update fraction transitions; start at end, end at start+1
+        //update to total stand fraction occurs at end of secforest_transition() fn
 	//overwrite fraction transitioning between stands (frac_transition[n])
    	for(p=(stand1->len_frac_transition - 1); p > 0; p--){
 		stand1->frac_transition[p]=stand1->frac_transition[p-1];
-    }
+        }
 
-    //update value at incoming fraction: set to zero
-    //updated if there is an incoming fraction from a younger stand
-    stand1->frac_transition[0]=0.0;
+        //update value at incoming fraction: set to zero
+        //updated if there is an incoming fraction from a younger stand
+        stand1->frac_transition[0]=0.0;
 
    	//update total standfrac of younger stand
-    stand1->frac-=frac_transition;
+        stand1->frac-=frac_transition;
 
-    //-----------------
+        //-----------------
 	// NOTE: stand deletions occur at end of ageclass_transtion()
-    //       ..and catch full transitions (i.e., when stand->frac==0)
-    //--------------
+        //       ..and catch full transitions (i.e., when stand->frac==0)
+        //--------------
 
-    //update stand attributes
-    transStand->landusetype=PRIMARY_or_SECFOREST;
-    transStand->TimeSinceDist=new_TimeSinceDist;
-    transStand->ageclass_standid=new_standid;
+        //update stand attributes
+        transStand->landusetype=PRIMARY_or_SECFOREST;
+        transStand->TimeSinceDist=new_TimeSinceDist;
+        transStand->ageclass_standid=new_standid;
 
 	//if empty, delete stand
 	if(stand1->frac < 0.0000004){
@@ -265,22 +265,22 @@ void main_transStand(Cell *cell, Stand *stand1, Stand *stand2, int num_trans_old
 		out_frac_transition=stand1->frac_transition[(stand1->len_frac_transition - 1)];
 
 		if(out_frac_transition < 0.0000004){
-			//--------------------------------------------
-			// update total stand fraction
-            //..fractional transitions for current stand
-			//--------------------------------------------
-		    //update fraction transitions; start at end, end at start+1
-		    //update to total stand fraction occurs at end of secforest_transition() fn
-			//overwrite fraction transitioning between stands (frac_transition[n])
-		    for(p=(stand1->len_frac_transition - 1); p > 0; p--){
-			  stand1->frac_transition[p]=stand1->frac_transition[p-1];
-		    }
+		        //--------------------------------------------
+		        // update total stand fraction
+                        //..fractional transitions for current stand
+	                //--------------------------------------------
+		        //update fraction transitions; start at end, end at start+1
+		        //update to total stand fraction occurs at end of secforest_transition() fn
+		        //overwrite fraction transitioning between stands (frac_transition[n])
+		        for(p=(stand1->len_frac_transition - 1); p > 0; p--){
+			   stand1->frac_transition[p]=stand1->frac_transition[p-1];
+		        }
 
-		    //update value at incoming fraction: set to zero
-		    //updated if there is an incoming fraction from a younger stand
-		    stand1->frac_transition[0]=0.0000000;
+		        //update value at incoming fraction: set to zero
+		        //updated if there is an incoming fraction from a younger stand
+		        stand1->frac_transition[0]=0.0000000;
 
-		    //stand->frac stays the same; no change
+		        //stand->frac stays the same; no change
 
 		}else{
 			//only do something if there is actual between-stand fractional transition
@@ -352,92 +352,92 @@ void ageclass_transition(Cell *cell, const Pftpar *pftpar, int npft, int PRIMARY
 	// T R A N S I T I O N S
 	//	-- transition from oldest to youngest to avoid dilution of biomass in the transitional fraction
 	//  -- max number of ageclasses are hard coded (12)
-    //     ..but the years and width of each ageclass are flexible, dependent on compiler flags
-    //---------------------------------------------------------------------------------------------------
+        //     ..but the years and width of each ageclass are flexible, dependent on compiler flags
+        //---------------------------------------------------------------------------------------------------
 
 	//----------------------------------
-    num_trans_older=AGECLASS_WIDTH_12;
-    new_TimeSinceDist=AGECLASS_FYR_12;
+    	num_trans_older=AGECLASS_WIDTH_12;
+    	new_TimeSinceDist=AGECLASS_FYR_12;
 
-    stand1=getstand(cell->standlist, getstand_standid(cell, 11, PRIMARY_or_SECFOREST));
-    stand2=getstand(cell->standlist, getstand_standid(cell, 12, PRIMARY_or_SECFOREST));
-    main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 12, pftpar, npft, PRIMARY_or_SECFOREST);
+    	stand1=getstand(cell->standlist, getstand_standid(cell, 11, PRIMARY_or_SECFOREST));
+    	stand2=getstand(cell->standlist, getstand_standid(cell, 12, PRIMARY_or_SECFOREST));
+    	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 12, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_11;
-    new_TimeSinceDist=AGECLASS_FYR_11;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_11;
+    	new_TimeSinceDist=AGECLASS_FYR_11;
 
-    stand1=getstand(cell->standlist, getstand_standid(cell, 10, PRIMARY_or_SECFOREST));
-    stand2=getstand(cell->standlist, getstand_standid(cell, 11, PRIMARY_or_SECFOREST));
-    main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 11, pftpar, npft, PRIMARY_or_SECFOREST);
+    	stand1=getstand(cell->standlist, getstand_standid(cell, 10, PRIMARY_or_SECFOREST));
+    	stand2=getstand(cell->standlist, getstand_standid(cell, 11, PRIMARY_or_SECFOREST));
+    	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 11, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_10;
-    new_TimeSinceDist=AGECLASS_FYR_10;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_10;
+    	new_TimeSinceDist=AGECLASS_FYR_10;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 9, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 10, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 10, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_9;
-    new_TimeSinceDist=AGECLASS_FYR_9;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_9;
+    	new_TimeSinceDist=AGECLASS_FYR_9;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 8, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 9, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 9, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_8;
-    new_TimeSinceDist=AGECLASS_FYR_8;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_8;
+    	new_TimeSinceDist=AGECLASS_FYR_8;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 7, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 8, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 8, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_7;
-    new_TimeSinceDist=AGECLASS_FYR_7;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_7;
+    	new_TimeSinceDist=AGECLASS_FYR_7;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 6, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 7, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 7, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_6;
-    new_TimeSinceDist=AGECLASS_FYR_6;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_6;
+    	new_TimeSinceDist=AGECLASS_FYR_6;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 5, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 6, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1,  stand2, num_trans_older, new_TimeSinceDist, 6, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_5;
-    new_TimeSinceDist=AGECLASS_FYR_5;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_5;
+    	new_TimeSinceDist=AGECLASS_FYR_5;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 4, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 5, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 5, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_4;
-    new_TimeSinceDist=AGECLASS_FYR_4;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_4;
+    	new_TimeSinceDist=AGECLASS_FYR_4;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 3, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 4, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 4, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_3;
-    new_TimeSinceDist=AGECLASS_FYR_3;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_3;
+    	new_TimeSinceDist=AGECLASS_FYR_3;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 2, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 3, PRIMARY_or_SECFOREST));
 	main_transStand(cell, stand1, stand2, num_trans_older, new_TimeSinceDist, 3, pftpar, npft, PRIMARY_or_SECFOREST);
 
-    //----------------------------------
-    num_trans_older=AGECLASS_WIDTH_2;
-    new_TimeSinceDist=AGECLASS_FYR_2;
+    	//----------------------------------
+    	num_trans_older=AGECLASS_WIDTH_2;
+    	new_TimeSinceDist=AGECLASS_FYR_2;
 
 	stand1=getstand(cell->standlist, getstand_standid(cell, 1, PRIMARY_or_SECFOREST));
 	stand2=getstand(cell->standlist, getstand_standid(cell, 2, PRIMARY_or_SECFOREST));
