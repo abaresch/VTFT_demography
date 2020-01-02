@@ -1,9 +1,10 @@
 /***************************************************************************/
 /**                                                                       **/
-/**         s o r t  F o r e s t  T i l e  .  c        		              **/
+/**         s o r t  F o r e s t  T i l e  .  c        		          **/
 /**                                                                       **/
 /**     pseudo code                                                       **/
 /**     sorting stands in stand list (young -> old)                       **/
+/**     ..based on bubble sort                                            **/
 /**     note: stands stored in a list via pointer to stand structure      **/
 /**           ..sort by swapping pointer address in list                  **/
 /**           ..based on integer id of stand type and ageclass_standid    **/
@@ -34,6 +35,7 @@ void sort_ForestTile(Standlist standlist, int AGE_or_DBH, int MGLAND_or_FOREST, 
   //===========================================================================
   // sorting method is based on 'bubble' sort, common sorting algorithm
   //	..less efficient than linked-lists, but more suitable for accessing
+  //    ..and in a small list (n=12), difference in time is minimal	
   //	  list members by index than linked-list structure
   //===========================================================================
 
@@ -61,15 +63,15 @@ void sort_ForestTile(Standlist standlist, int AGE_or_DBH, int MGLAND_or_FOREST, 
 	  		  stand_current=(Stand *)standlist->data[j];
 	  		  stand_next=(Stand *)standlist->data[j+1];
 	  		  if(stand_current->landusetype < stand_next->landusetype){
-	  			  //use ">" comparison operator for increasing sort
-                  //use "<" for decreasing sort (largest landusetype id first)
-                  //..which means TMP_VAL stands are first
-	  			  stand_swap=standlist->data[j];
-	  			  standlist->data[j]= standlist->data[j+1];
-	  			  standlist->data[j+1]= stand_swap;
-              }
+	  		  	//use ">" comparison operator for increasing sort
+                  		//use "<" for decreasing sort (largest landusetype id first)
+                  		//..which means TMP_VAL stands are first
+	  			stand_swap=standlist->data[j];
+	  			standlist->data[j]= standlist->data[j+1];
+	  			standlist->data[j+1]= stand_swap;
+              		  }
 	  	  }
-	  	}
+	  }
   }else{
       fprint("ERROR in sort_ForestTile, wrong MGLAND_or_FOREST: %s",MGLAND_or_FOREST);
   }
@@ -83,16 +85,16 @@ void sort_ForestTile(Standlist standlist, int AGE_or_DBH, int MGLAND_or_FOREST, 
 	  		  stand_current=(Stand *)standlist->data[j];
 	  		  stand_next=(Stand *)standlist->data[j+1];
 	  		  if(stand_current->landusetype == stand_next->landusetype &&
-                stand_current->ageclass_standid < stand_next->ageclass_standid){
+                	  	  stand_current->ageclass_standid < stand_next->ageclass_standid){
 	  			  //non-secforests used ageclass_standids of zero
 	  			  //use ">" comparison operator for increasing sort (youngest first)
 	  			  //use "<" for decreasing sort (oldest first)
 	  			  stand_swap=standlist->data[j];
 	  			  standlist->data[j]= standlist->data[j+1];
 	  			  standlist->data[j+1]= stand_swap;
-	  			}
+	  		  }
 	  	  }
-	  	}
+	  }
   }else{
       fprint("ERROR in sort_ForestTile, wrong AGE_or_DBH: %s",AGE_or_DBH);
   }
