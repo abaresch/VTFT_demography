@@ -6,7 +6,15 @@
 /**   functions below:                                                    **/
 /**     exist_pft -- determines if a pft exists in a stand                **/
 /**     copy_pft -- deep copy of pft structure to a new stand             **/
-/**     mixing ageclass stands, maintaing order of stands in list         **/
+/**     mixingRule_pft -- deep mix of pft struct and nested structs       **/
+/**                       ..between two stands                            **/
+/**     delstand_preserveOrder -- removes a stand from the standlist      **/
+/**                               preserves order in list, which reduces  **/
+/**                               times required to sort stands by age    **/
+/**     mix_standSimple -- simple mix of two stands (no ageclasses)       **/
+/**     mix_standComplex -- calls mixingRule_pft, delstand_preserveOrder  **/
+/**                         updates vector of fractional transitions      **/ 
+/**                                                                       **/
 /**     note: stands stored in a list via pointer to stand structure      **/
 /**           ..conservation of mass (water, carbon in veg,soil,litter)   **/
 /**                                                                       **/
@@ -36,10 +44,10 @@ Bool exist_pft(int pft_id, Stand *stand,int *pft_pos)
       //determine if a pft (pft_id) exists in the pft list of the stand
       //..update the position of the pointer to the existing pft (pft_pos)
       //..return TRUE to specify pft exists in stand
-	  if(pft->par->id == pft_id){
-	        *pft_pos=k;
-	        return TRUE;
-	   }
+      if(pft->par->id == pft_id){
+         *pft_pos=k;
+	 return TRUE;
+      }
   }
   //..return FALSE to specify pft not in stand
   return FALSE;
