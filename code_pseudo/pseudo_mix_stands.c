@@ -1,8 +1,11 @@
 /***************************************************************************/
 /**                                                                       **/
-/**         m i x _ s t a n d s .  c         							  **/
+/**         m i x _ s t a n d s .  c         				  **/
 /**                                                                       **/
 /**     pseudo code                                                       **/
+/**   functions below:                                                    **/
+/**     exist_pft -- determines if a pft exists in a stand                **/
+/**     copy_pft -- deep copy of pft structure to a new stand             **/
 /**     mixing ageclass stands, maintaing order of stands in list         **/
 /**     note: stands stored in a list via pointer to stand structure      **/
 /**           ..conservation of mass (water, carbon in veg,soil,litter)   **/
@@ -19,9 +22,11 @@
 #include "grass.h" /* grass pft struct in header, pseudo code not shown */
 #include "tree.h"  /* tree  pft struct in header, pseudo code not shown */
 
-/*--------------------------------------------*/
-/*   determine if pft exists in a stand       */
-/*--------------------------------------------*/
+/*------------------------------------------------------------*/
+/*   determine if pft exists in a stand                       */
+/*  returns TRUE and updates position pointer to pft in list  */
+/*  otherwise returns FALSE                                   */
+/*------------------------------------------------------------*/
 Bool exist_pft(int pft_id, Stand *stand,int *pft_pos)
 {
   Pft *pft; /* pft struct, pseudo code not shown */
@@ -42,6 +47,7 @@ Bool exist_pft(int pft_id, Stand *stand,int *pft_pos)
 
 /*---------------------------------------------------*/
 /*  simply deep copy pft, from one stand to another  */
+/*  ..returns position of copied pft in list         */           
 /*  ..requires that pft does not exist on a stand    */
 /*  ..adds a pft to the stand (pft_dup)              */
 /*  ..and performs a deep copy of the structure      */
@@ -119,7 +125,7 @@ int copy_pft(Pft *pft, Stand *stand, const Pftpar pftpar[], int npft)
 /*--------------------------------------------------------------------*/
 /* complex mixing of pfts between two stands                          */
 /* ..used when fractional transitions occur or when two stands merge  */
-/* ..maintains carbon mass balance                                    */
+/* ..maintains mass balance of carbon and water                       */
 /* ..takes the area- and density-weighted mean of values              */
 /* ..updated stand fractions, updated number of individuals per pft   */
 /*--------------------------------------------------------------------*/
@@ -228,11 +234,11 @@ void delstand_preserveOrder(Cell *cell, Stand *stand, int start_mid_end, int pos
 	//	..replace deleted stand with next stand
 	//----------------------------------------------
 	if(start_mid_end==0 || start_mid_end==1){
-        for(j = pos_stand2delete; j < (cell->standlist->n - 1); j++){
-          cell->standlist->data[j] = cell->standlist->data[j+1];
-        }
+		for(j = pos_stand2delete; j < (cell->standlist->n - 1); j++){
+		  cell->standlist->data[j] = cell->standlist->data[j+1];
+		}
 	}else if(start_mid_end==2){
-        //do nothing as memory in stand is freed and standlist will update normally at end of function
+        	//do nothing as memory in stand is freed and standlist will update normally at end of function
 	}else{
 		fail("\n POSITION OF STAND TO BE DELETED REQUIRED {START==0, MID==1, END==2}...");
 	}
@@ -305,20 +311,20 @@ void mix_standComplex(Cell *cell, Stand *stand1, Stand *stand2, int pos_stand2, 
 	  }
 	}
 
-    //if stand has ageclasses (primary, secondary)
-    //..then need to update the fractional transitions in the vector
+    	//if stand has ageclasses (primary, secondary)
+    	//..then need to update the fractional transitions in the vector
 	if(ISAGECLASS == TRUE){
 	  if(stand1->landusetype == PRIMARY || stand1->landusetype == SECFOREST){//accomodates primary and secondary ageclasses
-			//update incoming fraction
-			// "+=" bc incoming fraction can be from PRIMARY_TEMP or SECFOREST_TEMP
-            // ..and fractional transitions occur within different aged stands
-			stand1->frac_transition[0]+=stand2->frac;
+		//update incoming fraction
+		// "+=" bc incoming fraction can be from PRIMARY_TEMP or SECFOREST_TEMP
+            	// ..and fractional transitions occur within different aged stands
+		stand1->frac_transition[0]+=stand2->frac;
 
-			//update total fraction
-			stand1->frac+=stand2->frac;
+		//update total fraction
+		stand1->frac+=stand2->frac;
 	  }else{
-			//simple bc temp stands have only 1 fraction and are inter-mixing
-			stand1->frac+=stand2->frac;
+		//simple bc temp stands have only 1 fraction and are inter-mixing
+		stand1->frac+=stand2->frac;
 	  }
 
 	  //delete temporary mixstand copy
