@@ -72,47 +72,47 @@
 	#define AGECLASS_FYR_11 76
 	#define AGECLASS_FYR_12 101
 
-    #define AGECLASS_WIDTH_1 1
-    #define AGECLASS_WIDTH_2 2
-    #define AGECLASS_WIDTH_3 2
-    #define AGECLASS_WIDTH_4 2
-    #define AGECLASS_WIDTH_5 2
-    #define AGECLASS_WIDTH_6 5
-    #define AGECLASS_WIDTH_7 5
-    #define AGECLASS_WIDTH_8 5
-    #define AGECLASS_WIDTH_9 25
-    #define AGECLASS_WIDTH_10 25
-    #define AGECLASS_WIDTH_11 25
-    #define AGECLASS_WIDTH_12 1
+    	#define AGECLASS_WIDTH_1 1
+    	#define AGECLASS_WIDTH_2 2
+    	#define AGECLASS_WIDTH_3 2
+    	#define AGECLASS_WIDTH_4 2
+    	#define AGECLASS_WIDTH_5 2
+    	#define AGECLASS_WIDTH_6 5
+    	#define AGECLASS_WIDTH_7 5
+    	#define AGECLASS_WIDTH_8 5
+    	#define AGECLASS_WIDTH_9 25
+    	#define AGECLASS_WIDTH_10 25
+    	#define AGECLASS_WIDTH_11 25
+    	#define AGECLASS_WIDTH_12 1
   #else //EQUAL_AGEWIDTH is default
 	//maximum within-stand transitions
 	#define MAX_WITHINSTAND_TRANS 50
 
 	#define AGECLASS_FYR_1 1
-    #define AGECLASS_FYR_2 11
-    #define AGECLASS_FYR_3 21
-    #define AGECLASS_FYR_4 31
-    #define AGECLASS_FYR_5 41
-    #define AGECLASS_FYR_6 51
-    #define AGECLASS_FYR_7 61
-    #define AGECLASS_FYR_8 71
-    #define AGECLASS_FYR_9 81
-    #define AGECLASS_FYR_10 91
-    #define AGECLASS_FYR_11 101
-    #define AGECLASS_FYR_12 151
+    	#define AGECLASS_FYR_2 11
+    	#define AGECLASS_FYR_3 21
+    	#define AGECLASS_FYR_4 31
+    	#define AGECLASS_FYR_5 41
+    	#define AGECLASS_FYR_6 51
+    	#define AGECLASS_FYR_7 61
+    	#define AGECLASS_FYR_8 71
+    	#define AGECLASS_FYR_9 81
+    	#define AGECLASS_FYR_10 91
+    	#define AGECLASS_FYR_11 101
+    	#define AGECLASS_FYR_12 151
 
-    #define AGECLASS_WIDTH_1 10
-    #define AGECLASS_WIDTH_2 10
-    #define AGECLASS_WIDTH_3 10
-    #define AGECLASS_WIDTH_4 10
-    #define AGECLASS_WIDTH_5 10
-    #define AGECLASS_WIDTH_6 10
-    #define AGECLASS_WIDTH_7 10
-    #define AGECLASS_WIDTH_8 10
-    #define AGECLASS_WIDTH_9 10
-    #define AGECLASS_WIDTH_10 10
-    #define AGECLASS_WIDTH_11 50
-    #define AGECLASS_WIDTH_12 1
+    	#define AGECLASS_WIDTH_1 10
+    	#define AGECLASS_WIDTH_2 10
+    	#define AGECLASS_WIDTH_3 10
+    	#define AGECLASS_WIDTH_4 10
+    	#define AGECLASS_WIDTH_5 10
+    	#define AGECLASS_WIDTH_6 10
+    	#define AGECLASS_WIDTH_7 10
+    	#define AGECLASS_WIDTH_8 10
+    	#define AGECLASS_WIDTH_9 10
+    	#define AGECLASS_WIDTH_10 10
+    	#define AGECLASS_WIDTH_11 50
+    	#define AGECLASS_WIDTH_12 1
   #endif
 
 #else //NO ageclases
